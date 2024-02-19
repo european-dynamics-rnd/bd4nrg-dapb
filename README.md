@@ -11,7 +11,7 @@ The software prerequisites include:
 - Centos 7 or Windows Server Operative System (OS);
 - docker and docker-compose;
 
-Onenet software and its components will be delivered utilizing the Docker containers functionalities. Firstly, the Docker platform has to be downloaded and installed accordingly to the OS of the server to host the deployment. 
+BD4NRG DAPB software and its components will be delivered utilizing the Docker containers functionalities. Firstly, the Docker platform has to be downloaded and installed accordingly to the OS of the server to host the deployment. 
 
 ### **For Windows server**
 
@@ -118,7 +118,7 @@ This command downloads a test image and runs it in a container. When the contain
 
 ## **BD4NRG DAPB Containers Installation on Docker**
 
-To proceed with the installation of ONENET, the user must use the *docker* folder of this repository that contains all the necessary configuration.
+To proceed with the installation of BD4NRG DAPB, the user must use the *docker* folder of this repository that contains all the necessary configuration.
 
 1. The first step is to clone this repository <https://github.com/european-dynamics-rnd/bd4nrg-dapb-files> , by typing:
 ```
@@ -126,7 +126,7 @@ cd /opt/bd4nrg-dapb/
 git clone https://github.com/european-dynamics-rnd/bd4nrg-dapb-files.git
 ```
 
-2. There is the docker-compose.yml file located under /opt/bd4nrg-dapb/docker that contains all the configuration of the onenet fiware true connector containers. Go to that file by typing the command
+2. There is the docker-compose.yml file located under /opt/bd4nrg-dapb/docker that contains all the configuration of the BD4NRG DAPB containers. Go to that file by typing the command
 ```
 cd /opt/bd4nrg-dapb/docker
 ```
