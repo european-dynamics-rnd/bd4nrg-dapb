@@ -1,4 +1,4 @@
-﻿# **BD4NRG Deployment guide **
+﻿# BD4NRG DAPB Deployment guide 
 ## **Prerequisites and Installation**
 The hardware and operating system prerequisites are:
 
@@ -116,7 +116,7 @@ This command downloads a test image and runs it in a container. When the contain
 
 `$sudo chmod +x /usr/local/bin/docker-compose`
 
-## **BD4NRG Containers Installation on Docker**
+## **BD4NRG DAPB Containers Installation on Docker**
 
 To proceed with the installation of ONENET, the user must use the *docker* folder of this repository that contains all the necessary configuration.
 
@@ -141,78 +141,6 @@ Email us on the helias.karagozidis@eurodyn.com to get the ".env" file.
 $docker-compose up –d
 $docker-compose logs -f
 ```
-5. If no errors are seen, this means that BD4NRG DAPB was successfully deployed on your premisses.
-
-## **Connection Settings Configuration through the User Interface**
-
-For this step you must open the Onenet User Interface. 
-The user interface is in a container that was installed on your premisses on the previous step.
-It can be accessed through the url <code>http://the_ip_where_the_containers_are_installed:30003</code>, so
-
-1. Login to the Ui Application using the <code>username</code> & <code>password</code> that you received from the onenet administrator.
+5.  BD4NRG DAPB was successfully deployed.
 
 ![](image3.png)
-
-2. Navigate to the connector settings by the sidebar menu & define the urls of your <code>Local Api Url</code>, <code>Data App Url</code>, <code>Ecc Url</code> & <code>Broker Url</code>  .
-
-![](settings2.png)
-
-Those 4 onenet applications are running on the containers that you installed, so the urls must be configured accordingly as shown below 
-
-##### Local Api Url 
-The url must be <code>http://your_ip_where_the_containers_are_installed:30001/api</code>
-
-##### Data App Url 
-The Data App is also located on the <code>http://your_ip_where_the_containers_are:8484</code> but it cannot be used this way. 
-Data App Must Be Publicly Exposed In A Static Ip Via Https, before saved on the connection settings. 
-This happens because Data App is served as an endpoint for peer to peer file transfer between you and other Onenet users. 
-So the url must be the <code>https://your_static_url_that_points_to_dataapp_container</code>
-
-##### Ecc Url
-The Ecc Url is also located on the <code>https://your_ip_where_the_containers_are:8889/data</code> but it cannot be used this way. 
-Ecc Url Must Be Publicly Exposed In A Static Ip Via Https, before saved on the connection settings. 
-This happens because Ecc Url is served as an endpoint for peer to peer file transfer between you and other Onenet users. 
-So the url must be the <code>https://your_static_url_that_points_to_ecc_url_container</code>
-
-##### Broker Url 
-The url must be <code>http://your_ip_where_the_containers_are:1026</code>
-
-#### Optional Nginx configuration
-Optionally you can use nginx as web server.
-
-The folder _docker/nginx-connector-config/_ contains a [_docker-compose.yml_](docker/nginx-connector-config/docker-compose.yml) file and an example of nginx configuration ([_nginx.conf_](docker/nginx-connector-config/nginx.conf)).
-
-The [_docker-compose.yml_](docker/nginx-connector-config/docker-compose.yml) defines the nginx service to start (from the official image), the exposed ports and the volumes to mount.
-
-```
-version: "3"
-services:
-  nginx:
-   image : nginx:latest
-   ports :
-       - "8080:8080"
-       - "80:80"
-       - "443:443"
-   volumes:
-       - ./ssl:/etc/nginx/ssl
-       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-``` 
-
-The [(_nginx.conf_)](docker/nginx-connector-config/nginx.conf) contains header management, SSL configuration and location directives necessary for the correct functioning of the connector.
-
-In particular, for each service to be exposed, a location type directive must be defined with the following configurations (please replace the _**path**_ and _**uri**_ placeholders with your own values):
-```
-  location /<path> {
-    proxy_pass <uri>;
-    proxy_redirect off;
-    proxy_set_header    Upgrade     $http_upgrade;
-    proxy_set_header    Connection  "upgrade";
-    proxy_set_header Host $host:$server_port;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Ssl on;
-    proxy_set_header  X-Forwarded-Proto  https;
-    rewrite ^/<path>/(.*)$ /$1 break;
-  }
-``` 
-
-For further information, refer to the [Official Nginx Guide](https://nginx.org/en/docs/).
